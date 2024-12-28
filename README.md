@@ -1,6 +1,17 @@
-Hello, we recently created README file to update you on every step of our project <3
-Programming Language:
-We are using Swift as the source programming language for this project.
-Project Overview:
-The goal of this project is to develop an interpreter that translates Swift code into Java code. This interpreter will allow developers to easily convert Swift code into Java, simplifying the process of transitioning between the two languages. 
+Swift to Java Interpreter:
 
+The Swift to Java Interpreter is a tool designed to convert Swift source code into equivalent Java code. This interpreter automates the translation process, simplifies the process of transitioning between the two languages ensuring efficiency, accuracy, and consistency, making it ideal for developers working in cross-platform environments or migrating Swift projects to Java-based systems. 
+
+Team Members and Roles:
+
+Liliana Giguashvili - Team Leader
+Responsible for overseeing project development, managing tasks, and ensuring timely delivery.
+
+Toma Diasamidze - Developer
+Focuses on the core functionality of the interpreter and ensures accurate language translation.
+
+Luka Kurtauli - Developer
+Focuses on the core functionality of the interpreter and works on optimizing performance.
+
+Elene Orjonikidze - Developer
+Responsible for testing the interpreter and implementing additional features to improve user experience.
