@@ -1,69 +1,50 @@
 import java.util.Scanner;
 
 public class SwiftToJavaInterpreter {
+    private static final StringBuilder javaCode = new StringBuilder(); // To store the generated Java code
+
     public static String convertSwiftToJava(String swiftCode) {
-        StringBuilder javaCode = new StringBuilder();
-
-        // Split the input Swift code by lines
-        String[] lines = swiftCode.split("\\n");
-
-        // Process each line of Swift code
+        String[] lines = swiftCode.split("\\n"); // Split by lines
         for (String line : lines) {
             line = line.trim(); // Remove leading/trailing spaces
+            if (line.isEmpty()) continue; // Skip empty lines
 
-            // Handle import statement
             if (line.startsWith("import Foundation")) {
-                javaCode.append("import java.util.Scanner;\n");
-            }
-            // Handle function definition
-            else if (line.startsWith("func")) {
-                line = line.replace("func", "public static");
-                line = line.replace("->", "");
-                line = line.replace("Int", "int");
-                javaCode.append(line).append(" {\n");
-            }
-            // Handle variable declaration (var)
-            else if (line.startsWith("var")) {
-                line = line.replace("var", "int");
-                line = line.replace("=", "= ");
-                javaCode.append(line).append(";\n");
-            }
-            // Handle variable declaration (let - constant)
-            else if (line.startsWith("let")) {
-                line = line.replace("let", "final int");
-                line = line.replace("=", "= ");
-                javaCode.append(line).append(";\n");
-            }
-            // Handle for loop
-            else if (line.startsWith("for")) {
-                line = line.replace("for", "for (int");
-                line = line.replace("in", "=");
-                line = line.replace("...", "<=");
-                line = line.replace("{", "; i++) {");
-                javaCode.append(line).append("\n");
-            }
-            // Handle print statements
-            else if (line.startsWith("print")) {
-                line = line.replace("print(", "System.out.println(");
-                line = line.replace(")", ");");
-                javaCode.append(line).append("\n");
-            }
-            // Handle input
-            else if (line.contains("readLine")) {
-                javaCode.append("Scanner scanner = new Scanner(System.in);\n");
-                javaCode.append("int n = scanner.nextInt();\n");
-            }
-            // Default (copy any other code)
-            else {
-                javaCode.append(line).append("\n");
+                handleImport();
+            } else if (line.startsWith("func")) {
+                handleFunctionDefinition(line);
+            } else if (line.startsWith("var")) {
+                handleVariableDeclaration(line, false);
+            } else if (line.startsWith("let")) {
+                handleVariableDeclaration(line, true);
             }
         }
-
-        // Close any open blocks
-        javaCode.append("}\n");
-
+        
         return javaCode.toString();
     }
+
+    private static void handleImport() {
+        javaCode.append("import java.util.Scanner;\n");
+    }
+
+    private static void handleFunctionDefinition(String line) {
+        line = line.replace("func", "public static")
+                .replace("->", "")
+                .replace("Int", "int");
+        javaCode.append(line).append(" {\n");
+    }
+
+    private static void handleVariableDeclaration(String line, boolean isConstant) {
+        if (isConstant) {
+            line = line.replace("let", "final int");
+        } else {
+            line = line.replace("var", "int");
+        }
+        line = line.replace("=", "= ");
+        javaCode.append(line).append(";\n");
+    }
+
+}
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
