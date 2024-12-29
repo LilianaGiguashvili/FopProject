@@ -1,15 +1,22 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.print("Hello and welcome!");
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.println("Enter Swift code (type 'END' to finish):");
+        StringBuilder swiftCode = new StringBuilder();
+        String line;
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+        while (!(line = scanner.nextLine()).equals("END")) {
+            swiftCode.append(line).append("\n");
         }
+        
+        String javaCode = SwiftToJavaInterpreter.convertSwiftToJava(swiftCode.toString());
+        
+        System.out.println("\nConverted Java Code:\n");
+        System.out.println(javaCode);
+
+        scanner.close();
     }
 }
