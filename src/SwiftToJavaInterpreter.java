@@ -17,12 +17,16 @@ public class SwiftToJavaInterpreter {
                 handleVariableDeclaration(line, false);
             } else if (line.startsWith("let")) {
                 handleVariableDeclaration(line, true);
+            } else if (line.contains("abs(")) {
+                handleMathFunctions(line);
             } else if (line.startsWith("for")) {
                 handleForLoop(line);
             } else if (line.startsWith("while")) {
                 handleWhileLoop(line);
-            } else if (line.startsWith("guard")) {
-                handleGuard(line);
+            } else if (line.startsWith("if") || line.startsWith("guard")) {
+                handleCondition(line);
+            } else if (line.contains("true") || line.contains("false")) {
+                handleBooleans(line);
             } else if (line.startsWith("print")) {
                 handlePrint(line);
             } else if (line.contains("readLine")) {
@@ -74,16 +78,25 @@ public class SwiftToJavaInterpreter {
         javaCode.append(line).append("\n");
     }
 
-    private static void handleWhileLoop(String line){
+    private static void handleWhileLoop(String line) {
         line = line.replace("while", "while (")
                 .replace("{", ") {");
         javaCode.append(line).append("\n");
     }
     
-    private static void handleGuard(String line){
-        line = line.replace("guard", "if (!")
-                .replace("else", ") {")
+    private static void handleCondition(String line) {
+        line = line.replace("if ", "if (")
+                .replace("{", ") {")
+                .replace("else", "} else {")
                 .replace("}", "}");
+        javaCode.append(line).append("\n");
+    }
+
+    private static void handleBooleans(String line) {
+        line = line.replace("true", "true").replace("false", "false");
+        if (!line.endsWith(";")) {
+            line += ";";
+        }
         javaCode.append(line).append("\n");
     }
 
