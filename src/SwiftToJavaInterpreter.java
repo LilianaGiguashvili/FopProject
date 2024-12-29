@@ -3,6 +3,8 @@ import java.util.Scanner;
 public class SwiftToJavaInterpreter {
     private static final StringBuilder javaCode = new StringBuilder(); // To store the generated Java code
 
+    private static int openBraces = 0; // for brace counting
+    
     public static String convertSwiftToJava(String swiftCode) {
         String[] lines = swiftCode.split("\\n"); // Split by lines
         for (String line : lines) {
@@ -46,19 +48,24 @@ public class SwiftToJavaInterpreter {
 
     private static void handleFunctionDefinition(String line) {
         String functionName = line.split("\\(")[0].replace("func", "").trim();
-        String returnType = "void"; // Default to void if no return type is specified
-        
+        String returnType = "void";
+
         if (line.contains("->")) {
             String[] parts = line.split("->");
-            returnType = parts[1].trim().split("\\{")[0].replace("Int", "int").replace("Bool", "boolean");
+            returnType = parts[1].trim().split("\\{")[0]
+                    .replace("Int", "int")
+                    .replace("Bool", "boolean");
         }
 
-        line = line.replace("func", "public static")
-                   .replace("->", "")
-                   .replace("Int", "int")
-                   .replace("Bool", "boolean");
+        String params = line.substring(line.indexOf('(') + 1, line.indexOf(')'))
+                .replace("_", "") // Remove placeholder
+                .replace(":", " ") // Convert Swift style to Java
+                .replace("Int", "int")
+                .replace("Bool", "boolean");
 
-        javaCode.append("public static ").append(returnType).append(" ").append(functionName).append(" {\n");
+        javaCode.append("public static ").append(returnType).append(" ").append(functionName)
+                .append("(").append(params).append(") {\n");
+        increaseBraceCount();
     }
 
     private static void handleVariableDeclaration(String line, boolean isConstant) {
@@ -81,11 +88,22 @@ public class SwiftToJavaInterpreter {
         javaCode.append(line).append("\n");
     }
     private static void handleForLoop(String line) {
-        line = line.replace("for", "for (int")
-                .replace("in", "=")
-                .replace("...", "<=")
-                .replace("{", "; i++) {");
+        if (line.contains("...")) {
+            line = line.replace("for ", "for (int ")
+                    .replace(" in ", " = ")
+                    .replace("...", "; i <= ")
+                    .replace("{", "; i++) {");
+        }
+        
+        else if (line.contains("..<")) {
+            line = line.replace("for ", "for (int ")
+                    .replace(" in ", " = ")
+                    .replace("..<", "; i < ")
+                    .replace("{", "; i++) {");
+        }
+
         javaCode.append(line).append("\n");
+        increaseBraceCount();
     }
 
     private static void handleWhileLoop(String line) {
@@ -100,6 +118,11 @@ public class SwiftToJavaInterpreter {
                 .replace("else", "} else {")
                 .replace("}", "}");
         javaCode.append(line).append("\n");
+
+        if (line.contains("{")) {
+            increaseBraceCount();
+        }
+        
     }
 
     private static void handleBooleans(String line) {
@@ -122,14 +145,37 @@ public class SwiftToJavaInterpreter {
     }
 
     private static void handleDefault(String line) {
-        if(!line.endsWith(";") && !line.endsWith("{") && !line.endsWith("}")){
-            line += ";";
+        if (line.startsWith("return ")) { // Handle return statement
+            if (!line.endsWith(";")) {
+                line += ";";
+            }
         }
-        javaCode.append(line).append("\n");
+        if (line.equals("}")) { // Handle closing brace
+            javaCode.append(line).append("\n");
+            decreaseBraceCount();
+        } else {
+            if (!line.endsWith(";") && !line.endsWith("{") && !line.endsWith("}")) {
+                line += ";";
+            }
+            if (line.endsWith("{")) { // Handle opening brace
+                increaseBraceCount();
+            }
+            javaCode.append(line).append("\n");
+        }
+    }
+
+    private static void increaseBraceCount() {
+        openBraces++;
+    }
+
+    private static void decreaseBraceCount() {
+        openBraces--;
     }
 
     private static void closeOpenBlocks() {
-        javaCode.append("}\n");
+        while (openBraces > 0) {
+            openBraces--;
+        }
     }
 }
 
