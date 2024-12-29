@@ -45,6 +45,20 @@ public class SwiftToJavaInterpreter {
     }
 
     private static void handleFunctionDefinition(String line) {
+        String functionName = line.split("\\(")[0].replace("func", "").trim();
+        String returnType = "void"; // Default to void if no return type is specified
+        
+        if (line.contains("->")) {
+            String[] parts = line.split("->");
+            returnType = parts[1].trim().split("\\{")[0].replace("Int", "int").replace("Bool", "boolean");
+        }
+
+        line = line.replace("func", "public static")
+                   .replace("->", "")
+                   .replace("Int", "int")
+                   .replace("Bool", "boolean");
+
+        javaCode.append("public static ").append(returnType).append(" ").append(functionName).append(" {\n");
         line = line.replace("func", "public static")
                 .replace("->", "")
                 .replace("Int", "int");
