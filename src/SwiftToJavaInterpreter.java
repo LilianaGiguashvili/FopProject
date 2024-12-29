@@ -67,9 +67,10 @@ public class SwiftToJavaInterpreter {
 
     private static void handleWhileLoop(String line){
         line = line.replace("while", "while (")
-                .replace("{", ") {")
+                .replace("{", ") {");
         javaCode.append(line).append("\n");
     }
+    
     private static void handleGuard(String line){
         line = line.replace("guard", "if (!")
                 .replace("else", ") {")
