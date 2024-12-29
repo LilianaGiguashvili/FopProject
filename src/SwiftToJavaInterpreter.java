@@ -78,14 +78,14 @@ public class SwiftToJavaInterpreter {
         if (!line.endsWith(";")) {
             line += ";";
         }
-        javaCode.append(line).append(";\n");
+        javaCode.append(cleanLine(line)).append("\n");
     }
     private static void handleMathFunctions(String line) {
         line = line.replace("abs(", "Math.abs(");
         if (!line.endsWith(";")) {
             line += ";";
         }
-        javaCode.append(line).append("\n");
+        javaCode.append(cleanLine(line)).append("\n");
     }
     private static void handleForLoop(String line) {
         if (line.contains("...")) {
@@ -102,14 +102,16 @@ public class SwiftToJavaInterpreter {
                     .replace("{", "; i++) {");
         }
 
-        javaCode.append(line).append("\n");
+        javaCode.append(cleanLine(line)).append("\n");
+        
         increaseBraceCount();
     }
 
     private static void handleWhileLoop(String line) {
         line = line.replace("while", "while (")
                 .replace("{", ") {");
-        javaCode.append(line).append("\n");
+        
+        javaCode.append(cleanLine(line)).append("\n");
     }
     
     private static void handleCondition(String line) {
@@ -117,7 +119,8 @@ public class SwiftToJavaInterpreter {
                 .replace("{", ") {")
                 .replace("else", "} else {")
                 .replace("}", "}");
-        javaCode.append(line).append("\n");
+        
+        javaCode.append(cleanLine(line)).append("\n");
 
         if (line.contains("{")) {
             increaseBraceCount();
@@ -136,7 +139,8 @@ public class SwiftToJavaInterpreter {
      private static void handlePrint(String line) {
         line = line.replace("print(", "System.out.println(")
                 .replace(")", ");");
-        javaCode.append(line).append("\n");
+         
+        javaCode.append(cleanLine(line)).append("\n");
     }
 
     private static void handleInput() {
@@ -160,7 +164,8 @@ public class SwiftToJavaInterpreter {
             if (line.endsWith("{")) { // Handle opening brace
                 increaseBraceCount();
             }
-            javaCode.append(line).append("\n");
+            
+            javaCode.append(cleanLine(line)).append("\n");
         }
     }
 
@@ -177,6 +182,11 @@ public class SwiftToJavaInterpreter {
             openBraces--;
         }
     }
+
+    private static String cleanLine(String line) {
+        return line.replaceAll(";;", ";").trim();
+    }
+    
 }
 
     
