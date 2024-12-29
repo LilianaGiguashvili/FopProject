@@ -19,6 +19,8 @@ public class SwiftToJavaInterpreter {
                 handleVariableDeclaration(line, true);
             } else if (line.startsWith("for")) {
                 handleForLoop(line);
+            } else if (line.startsWith("while")) {
+                handleWhileLoop(line);
             } else if (line.startsWith("guard")) {
                 handleGuard(line);
             } else if (line.startsWith("print")) {
@@ -62,7 +64,12 @@ public class SwiftToJavaInterpreter {
                 .replace("{", "; i++) {");
         javaCode.append(line).append("\n");
     }
-    
+
+    private static void handleWhileLoop(String line){
+        line = line.replace("while", "while (")
+                .replace("{", ") {")
+        javaCode.append(line).append("\n");
+    }
     private static void handleGuard(String line){
         line = line.replace("guard", "if (!")
                 .replace("else", ") {")
