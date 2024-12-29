@@ -86,10 +86,13 @@ public class SwiftToJavaInterpreter {
 
     private static void handleInput() {
         javaCode.append("Scanner scanner = new Scanner(System.in);\n");
-        javaCode.append("int n = scanner.nextInt();\n");
+        javaCode.append("String input = scanner.nextLine();\n");
     }
 
     private static void handleDefault(String line) {
+        if(!line.endsWith(";") && !line.endsWith("{") && !line.endsWith("}")){
+            line += ";";
+        }
         javaCode.append(line).append("\n");
     }
 
