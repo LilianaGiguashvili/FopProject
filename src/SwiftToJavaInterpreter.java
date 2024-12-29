@@ -59,10 +59,6 @@ public class SwiftToJavaInterpreter {
                    .replace("Bool", "boolean");
 
         javaCode.append("public static ").append(returnType).append(" ").append(functionName).append(" {\n");
-        line = line.replace("func", "public static")
-                .replace("->", "")
-                .replace("Int", "int");
-        javaCode.append(line).append(" {\n");
     }
 
     private static void handleVariableDeclaration(String line, boolean isConstant) {
