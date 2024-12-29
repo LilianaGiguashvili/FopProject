@@ -184,6 +184,19 @@ public class SwiftToJavaInterpreter {
     }
 
     private static String cleanLine(String line) {
+        if (line.contains("//")) {
+            // Split the line into code and comment
+            String[] parts = line.split("//", 2);
+            String codePart = parts[0].trim();
+            String commentPart = "//" + parts[1].trim(); // The comment part
+            // Ensure the code part ends with a semicolon if it's not empty
+            if (!codePart.isEmpty() && !codePart.endsWith(";")) {
+                codePart += ";";
+            }
+            // Return the formatted line with the semicolon before the comment
+            return codePart + " " + commentPart;
+        }
+        
         return line.replaceAll(";;", ";").trim();
     }
     
