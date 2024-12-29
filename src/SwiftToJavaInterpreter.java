@@ -54,9 +54,18 @@ public class SwiftToJavaInterpreter {
             line = line.replace("var", "int");
         }
         line = line.replace("=", "= ");
+        if (!line.endsWith(";")) {
+            line += ";";
+        }
         javaCode.append(line).append(";\n");
     }
-
+    private static void handleMathFunctions(String line) {
+        line = line.replace("abs(", "Math.abs(");
+        if (!line.endsWith(";")) {
+            line += ";";
+        }
+        javaCode.append(line).append("\n");
+    }
     private static void handleForLoop(String line) {
         line = line.replace("for", "for (int")
                 .replace("in", "=")
