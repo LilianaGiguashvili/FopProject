@@ -98,25 +98,4 @@ public class SwiftToJavaInterpreter {
     }
 }
 
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-
-        // Input Swift code
-        System.out.println("Enter Swift code (type 'END' to finish):");
-        StringBuilder swiftCode = new StringBuilder();
-        String line;
-
-        while (!(line = scanner.nextLine()).equals("END")) {
-            swiftCode.append(line).append("\n");
-        }
-
-        // Convert Swift code to Java code
-        String javaCode = convertSwiftToJava(swiftCode.toString());
-
-        // Output Java code
-        System.out.println("\nConverted Java Code:\n");
-        System.out.println(javaCode);
-
-        scanner.close();
-    }
-}
+    
