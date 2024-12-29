@@ -17,8 +17,10 @@ public class SwiftToJavaInterpreter {
                 handleVariableDeclaration(line, false);
             } else if (line.startsWith("let")) {
                 handleVariableDeclaration(line, true);
-            }else if (line.startsWith("for")) {
+            } else if (line.startsWith("for")) {
                 handleForLoop(line);
+            } else if (line.startsWith("guard")) {
+                handleGuard(line);
             } else if (line.startsWith("print")) {
                 handlePrint(line);
             } else if (line.contains("readLine")) {
@@ -58,6 +60,13 @@ public class SwiftToJavaInterpreter {
                 .replace("in", "=")
                 .replace("...", "<=")
                 .replace("{", "; i++) {");
+        javaCode.append(line).append("\n");
+    }
+    
+    private static void handleGuard(String line){
+        line = line.replace("guard", "if (!")
+                .replace("else", ") {")
+                .replace("}", "}");
         javaCode.append(line).append("\n");
     }
 
