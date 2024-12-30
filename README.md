@@ -16,5 +16,6 @@ Focuses on the core functionality of the interpreter and works on optimizing per
 Elene Orjonikidze - Developer
 Responsible for testing the interpreter and implementing additional features to improve user experience.
 
-Algorithms Collection
+Algorithms Collection:
+
 This repository contains implementations of basic algorithms, including sum of numbers, factorial, GCD, reversing numbers, and more. Each algorithm is provided in both Swift and Java, with clear examples and explanations. The algorithms are documented in the Algorithms.txt file.
