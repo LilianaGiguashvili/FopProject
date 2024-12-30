@@ -21,6 +21,8 @@ public class SwiftToJavaInterpreter {
                 handleVariableDeclaration(line, true);
             } else if (line.contains("abs(")) {
                 handleMathFunctions(line);
+            } else if (line.contains("max(")) {
+                handleMathFunctions(line);
             } else if (line.startsWith("for")) {
                 handleForLoop(line);
             } else if (line.startsWith("while")) {
@@ -33,7 +35,7 @@ public class SwiftToJavaInterpreter {
                 handlePrint(line);
             } else if (line.contains("readLine")) {
                 handleInput();
-            } else {
+            }else{
                 handleDefault(line);
             }
         }
@@ -59,9 +61,10 @@ public class SwiftToJavaInterpreter {
 
         String params = line.substring(line.indexOf('(') + 1, line.indexOf(')'))
                 .replace("_", "") // Remove placeholder
-                .replace(":", " ") // Convert Swift style to Java
+                .replace(":", "")// Convert Swift style to Java
                 .replace("Int", "int")
-                .replace("Bool", "boolean");
+                .replace("Bool", "boolean")
+                .replaceAll("(\\w+) (\\w+)", "$2 $1");
 
         javaCode.append("public static ").append(returnType).append(" ").append(functionName)
                 .append("(").append(params).append(") {\n");
@@ -81,7 +84,11 @@ public class SwiftToJavaInterpreter {
         javaCode.append(cleanLine(line)).append("\n");
     }
     private static void handleMathFunctions(String line) {
-        line = line.replace("abs(", "Math.abs(");
+        if(line.contains("abs(")){
+            line = line.replace("abs(", "Math.abs(");
+        }else if(line.contains("max(")){
+            line = line.replace("max(", "Math.max(");
+        }
         if (!line.endsWith(";")) {
             line += ";";
         }
@@ -164,7 +171,7 @@ public class SwiftToJavaInterpreter {
             if (line.endsWith("{")) { // Handle opening brace
                 increaseBraceCount();
             }
-            
+
             javaCode.append(cleanLine(line)).append("\n");
         }
     }
@@ -199,7 +206,8 @@ public class SwiftToJavaInterpreter {
         
         return line.replaceAll(";;", ";").trim();
     }
-    
+
+
 }
 
     
