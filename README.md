@@ -19,3 +19,9 @@ Responsible for testing the interpreter and implementing additional features to 
 Algorithms Collection:
 
 This repository contains implementations of basic algorithms, including sum of numbers, factorial, GCD, reversing numbers, and more. Each algorithm is provided in both Swift and Java, with clear examples and explanations. The algorithms are documented in the Algorithms.txt file.
+
+Project Status:
+
+The Swift to Java Interpreter is fully functional, offering an efficient and user-friendly solution for converting Swift code to Java. It has been thoroughly tested to ensure accuracy and reliability.
+
+
